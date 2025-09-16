@@ -81,3 +81,43 @@ docker run -p 8080:8080 secret-hitler-backend
 ```
 
 ---
+
+## 7. Running in the Background on Raspberry Pi
+
+If you want the servers to keep running after closing SSH or logging out:
+
+### Using `nohup`
+
+```bash
+# Frontend
+cd frontend
+nohup npm start > frontend.log 2>&1 &
+
+# Backend
+cd backend
+nohup ./gradlew bootRun > backend.log 2>&1 &
+```
+
+- Logs will be written to `frontend.log` and `backend.log`.
+- The `&` at the end runs the process in the background.
+- To stop them later, use:
+  ```bash
+  ps aux | grep node     # find frontend process
+  ps aux | grep java     # find backend process
+  kill <PID>
+  ```
+
+### Using `tmux` (recommended)
+
+```bash
+tmux new -s secret-hitler
+```
+
+- Start your frontend and backend inside the tmux session.
+- Detach with `CTRL + B` then `D`.
+- Reattach later with:
+  ```bash
+  tmux attach -t secret-hitler
+  ```
+
+---
